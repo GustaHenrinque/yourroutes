@@ -1,16 +1,34 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from '@expo/vector-icons';
+import { db } from '../../firebaseConfig';
+import { collection, query, where, getDocs } from 'firebase/firestore';
 
 export default function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  const handleLogin = () => {
-    alert('Login realizado com sucesso!');
-    navigation.replace('Index'); // Alterado de "Home" para "Index"
+  const handleLogin = async () => {
+    try {
+      const q = query(
+        collection(db, 'users'),
+        where('email', '==', email),
+        where('password', '==', password) // Evite usar senhas em texto puro em produção
+      );
+      const querySnapshot = await getDocs(q);
+
+      if (!querySnapshot.empty) {
+        Alert.alert('Sucesso', 'Login realizado com sucesso!');
+        navigation.replace('Index'); // Navegar para a tela principal
+      } else {
+        Alert.alert('Erro', 'Email ou senha inválidos.');
+      }
+    } catch (error) {
+      console.error('Erro ao fazer login:', error);
+      Alert.alert('Erro', 'Ocorreu um erro ao fazer login. Tente novamente.');
+    }
   };
 
   return (
@@ -18,8 +36,7 @@ export default function Login() {
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
-      <Image source={require('../../assets/logo.jpeg')
-} style={styles.logo} />
+      <Image source={require('../../assets/logo.jpeg')} style={styles.logo} />
       <Text style={styles.subtitle}>Faça login para continuar</Text>
       <Text style={styles.label}>Email</Text>
       <TextInput
@@ -39,9 +56,6 @@ export default function Login() {
         secureTextEntry
         placeholderTextColor="gray"
       />
-      <TouchableOpacity>
-        <Text style={[styles.forgotPassword, { textAlign: 'left' }]}>Esqueceu a senha?</Text>
-      </TouchableOpacity>
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Entrar</Text>
       </TouchableOpacity>
@@ -65,9 +79,9 @@ const styles = StyleSheet.create({
     left: 20,
   },
   logo: {
-    width: '100%', // Largura 100%
-    height: 200, // Altura proporcional
-    aspectRatio: 235 / 39, // Mantém a proporção original
+    width: '100%',
+    height: 200,
+    aspectRatio: 235 / 39,
     alignSelf: 'center',
     marginBottom: 20,
   },
@@ -89,12 +103,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontSize: 16,
     color: 'black',
-  },
-  forgotPassword: {
-    fontSize: 14,
-    color: 'gray',
-    textAlign: 'right',
-    marginBottom: 30,
   },
   button: {
     backgroundColor: '#000',

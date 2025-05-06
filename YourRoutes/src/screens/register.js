@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { db } from '../../firebaseConfig';
+import { collection, addDoc } from 'firebase/firestore';
 
 export default function Register() {
   const [name, setName] = useState('');
@@ -9,9 +11,22 @@ export default function Register() {
   const [password, setPassword] = useState('');
   const navigation = useNavigation();
 
-  const handleRegister = () => {
-    alert('Cadastro realizado com sucesso!');
-    navigation.navigate('Login'); // Garantir que redireciona corretamente para "Login"
+  const handleRegister = async () => {
+    try {
+      // Salvar os dados no Firestore na coleção 'users'
+      await addDoc(collection(db, 'users'), {
+        name: name,
+        email: email,
+        password: password, // Evite salvar senhas em texto puro em produção
+        createdAt: new Date(),
+      });
+
+      Alert.alert('Sucesso', 'Cadastro realizado com sucesso!');
+      navigation.navigate('Login'); // Navegar para a tela de login
+    } catch (error) {
+      console.error('Erro ao registrar usuário:', error);
+      Alert.alert('Erro', 'Ocorreu um erro ao cadastrar. Tente novamente.');
+    }
   };
 
   return (
@@ -19,8 +34,7 @@ export default function Register() {
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
-      <Image source={require('../../assets/logo.jpeg')
-} style={styles.logo} />
+      <Image source={require('../../assets/logo.jpeg')} style={styles.logo} />
       <Text style={styles.subtitle}>Cadastre-se</Text>
       <Text style={styles.label}>Nome</Text>
       <TextInput
@@ -28,15 +42,6 @@ export default function Register() {
         placeholder="Digite seu nome"
         value={name}
         onChangeText={setName}
-        placeholderTextColor="gray"
-      />
-      <Text style={styles.label}>Senha</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Digite sua senha"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
         placeholderTextColor="gray"
       />
       <Text style={styles.label}>Email</Text>
@@ -48,9 +53,15 @@ export default function Register() {
         keyboardType="email-address"
         placeholderTextColor="gray"
       />
-      <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-        <Text style={styles.linkText}>Já possui uma conta?</Text>
-      </TouchableOpacity>
+      <Text style={styles.label}>Senha</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Digite sua senha"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
+        placeholderTextColor="gray"
+      />
       <TouchableOpacity style={styles.button} onPress={handleRegister}>
         <Text style={styles.buttonText}>Cadastrar</Text>
       </TouchableOpacity>
@@ -71,9 +82,9 @@ const styles = StyleSheet.create({
     left: 20,
   },
   logo: {
-    width: '100%', // Largura 100%
-    height: 200, // Altura proporcional
-    aspectRatio: 235 / 39, // Mantém a proporção original
+    width: '100%',
+    height: 200,
+    aspectRatio: 235 / 39,
     alignSelf: 'center',
     marginBottom: 20,
   },
@@ -96,18 +107,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: 'black',
   },
-  linkText: {
-    color: '#000',
-    fontSize: 14,
-    textAlign: 'center',
-    marginTop: 20,
-  },
   button: {
     backgroundColor: '#000',
     paddingVertical: 15,
     borderRadius: 5,
     alignItems: 'center',
-    marginTop: 20,
   },
   buttonText: {
     color: '#fff',
