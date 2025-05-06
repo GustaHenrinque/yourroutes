@@ -6,8 +6,7 @@ import Login from '../screens/login';
 import Register from '../screens/register';
 import Index from '../screens/index';
 import Rotas from '../screens/rotas';
-import SplashScreen from '../screens/SplashScreen'; 
-
+import SplashScreen from '../screens/SplashScreen'; // Certifique-se de que o caminho está correto
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -41,7 +40,6 @@ function TabNavigator() {
     >
       <Tab.Screen name="Rotas" component={Rotas} />
       <Tab.Screen name="Index" component={Index} />
-      <Tab.Screen name="Rotas" component={Rotas} />
     </Tab.Navigator>
   );
 }
@@ -53,10 +51,6 @@ export default function AppNavigator() {
       <Stack.Screen name="Login" component={Login} />
       <Stack.Screen name="Register" component={Register} />
       <Stack.Screen name="Index" component={TabNavigator} />
-      <Stack.Screen name="Rotas" component={TabNavigator} />
-    
-      {/* Adicione outras telas aqui, se necessário */}
-     
     </Stack.Navigator>
   );
 }
