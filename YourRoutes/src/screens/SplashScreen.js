@@ -12,7 +12,8 @@ export default function SplashScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-     
+      <Image source={require('../../assets/logo.jpeg')
+     } style={styles.logo} />
     </View>
   );
 }
@@ -25,7 +26,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   logo: {
-    width: 235,
-    height: 39,
+    width: 170, // Largura 100%
+    height: 170, // Altura proporcional
+    aspectRatio: 235 / 39, // Mantém a proporção original
+    borderRadius: 20,
   },
 });

@@ -19,7 +19,8 @@ export default function Register() {
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
-    
+      <Image source={require('../../assets/logo.jpeg')
+} style={styles.logo} />
       <Text style={styles.subtitle}>Cadastre-se</Text>
       <Text style={styles.label}>Nome</Text>
       <TextInput
@@ -70,10 +71,11 @@ const styles = StyleSheet.create({
     left: 20,
   },
   logo: {
-    width: 200, // Ajuste proporcional
-    height: 30,
+    width: '100%', // Largura 100%
+    height: 200, // Altura proporcional
+    aspectRatio: 235 / 39, // Mantém a proporção original
     alignSelf: 'center',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   subtitle: {
     fontSize: 14,

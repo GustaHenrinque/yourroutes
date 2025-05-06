@@ -18,7 +18,8 @@ export default function Login() {
       <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
         <Ionicons name="arrow-back" size={24} color="black" />
       </TouchableOpacity>
-     
+      <Image source={require('../../assets/logo.jpeg')
+} style={styles.logo} />
       <Text style={styles.subtitle}>Faça login para continuar</Text>
       <Text style={styles.label}>Email</Text>
       <TextInput
@@ -64,10 +65,11 @@ const styles = StyleSheet.create({
     left: 20,
   },
   logo: {
-    width: 200, // Reduzi ainda mais a largura
-    height: 30, // Reduzi ainda mais a altura proporcionalmente
+    width: '100%', // Largura 100%
+    height: 200, // Altura proporcional
+    aspectRatio: 235 / 39, // Mantém a proporção original
     alignSelf: 'center',
-    marginBottom: 10,
+    marginBottom: 20,
   },
   subtitle: {
     fontSize: 14,
