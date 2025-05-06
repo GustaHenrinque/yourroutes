@@ -20,7 +20,7 @@ function TabNavigator() {
           let iconName;
 
           if (route.name === 'Index') {
-            iconName = 'home';
+            iconName = 'user'; // Ícone de avatar
           } else if (route.name === 'Rotas') {
             iconName = 'map';
           }
@@ -39,9 +39,9 @@ function TabNavigator() {
         tabBarShowLabel: false,
       })}
     >
+      <Tab.Screen name="Rotas" component={Rotas} />
       <Tab.Screen name="Index" component={Index} />
       <Tab.Screen name="Rotas" component={Rotas} />
-      
     </Tab.Navigator>
   );
 }
