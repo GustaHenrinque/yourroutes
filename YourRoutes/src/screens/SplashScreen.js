@@ -26,8 +26,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   logo: {
-    width: 170, // Largura 100%
-    height: 170, // Altura proporcional
+    width: 200, // Largura 100%
+    height: 200, // Altura proporcional
     aspectRatio: 235 / 39, // Mantém a proporção original
     borderRadius: 20,
   },
