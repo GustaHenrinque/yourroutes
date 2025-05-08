@@ -20,14 +20,14 @@ export default function Login() {
       const querySnapshot = await getDocs(q);
 
       if (!querySnapshot.empty) {
-        Alert.alert('Sucesso', 'Login realizado com sucesso!');
+        alert('Sucesso', 'Login realizado com sucesso!');
         navigation.replace('Index'); // Navegar para a tela principal
       } else {
-        Alert.alert('Erro', 'Email ou senha inválidos.');
+        alert('Erro', 'Email ou senha inválidos.');
       }
     } catch (error) {
       console.error('Erro ao fazer login:', error);
-      Alert.alert('Erro', 'Ocorreu um erro ao fazer login. Tente novamente.');
+      alert('Erro', 'Ocorreu um erro ao fazer login. Tente novamente.');
     }
   };
 

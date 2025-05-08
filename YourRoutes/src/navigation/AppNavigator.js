@@ -5,8 +5,8 @@ import { Feather } from '@expo/vector-icons';
 import Login from '../screens/login';
 import Register from '../screens/register';
 import Index from '../screens/index';
-import Rotas from '../screens/rotas';
 import SplashScreen from '../screens/SplashScreen'; // Certifique-se de que o caminho está correto
+import Perfil from '../screens/perfil';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -15,31 +15,37 @@ function TabNavigator() {
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
-        tabBarIcon: ({ color, size, focused }) => {
+        tabBarIcon: ({ color }) => {
           let iconName;
 
           if (route.name === 'Index') {
-            iconName = 'user'; // Ícone de avatar
-          } else if (route.name === 'Rotas') {
-            iconName = 'map';
+            iconName = 'map-pin'; // Ícone de localização
+          } else if (route.name === 'Perfil') {
+            iconName = 'user'; // Ícone de perfil
           }
 
           return (
             <Feather
               name={iconName}
-              size={focused ? 24 : 20}
-              color={focused ? 'black' : color}
+              size={28} // Aumentar o tamanho dos ícones
+              color="white" // Ícones brancos
+              style={{ marginBottom: -10 }} // Move os ícones mais para baixo
             />
           );
         },
-        tabBarActiveTintColor: '#333',
-        tabBarInactiveTintColor: 'gray',
+        tabBarActiveTintColor: 'white',
+        tabBarInactiveTintColor: 'white',
         headerShown: false,
         tabBarShowLabel: false,
+        tabBarStyle: {
+          backgroundColor: 'black', // Cor preta
+          height: 80, // Altura maior
+          paddingHorizontal: 50, // Reduzir o espaçamento horizontal
+        },
       })}
     >
-      <Tab.Screen name="Rotas" component={Rotas} />
-      <Tab.Screen name="Index" component={Index} />
+       <Tab.Screen name="Index" component={Index} />
+      <Tab.Screen name="Perfil" component={Perfil} />
     </Tab.Navigator>
   );
 }
