@@ -1,12 +1,13 @@
+// src/screens/SplashScreen.js
 import React, { useEffect } from 'react';
 import { View, StyleSheet, Image } from 'react-native';
 
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Index'); // Redirecionar para "Index"
+      // vai para o TabNavigator, que agora inicia em “Perfil”
+      navigation.replace('Index');
     }, 1500);
-
     return () => clearTimeout(timer);
   }, [navigation]);
 
@@ -18,16 +19,6 @@ export default function SplashScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#fff',
-  },
-  logo: {
-    width: 200,
-    height: 200,
-    aspectRatio: 235 / 39,
-    borderRadius: 20,
-  },
+  container: { flex:1, justifyContent:'center', alignItems:'center', backgroundColor:'#fff' },
+  logo:      { width:200, height:200, aspectRatio:235/39, borderRadius:20 },
 });
