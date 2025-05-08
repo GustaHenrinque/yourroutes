@@ -1,76 +1,18 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
-import { useNavigation } from '@react-navigation/native';
-import { getAuth, signOut } from 'firebase/auth';
-import { getFirestore, doc, getDoc, updateDoc } from 'firebase/firestore';
 
 export default function Perfil() {
-  const navigation = useNavigation();
-  const auth = getAuth();
-  const firestore = getFirestore();
-
   const [isEditing, setIsEditing] = useState(false);
   const [userName, setUserName] = useState('');
   const [email, setEmail] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [userId, setUserId] = useState(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const user = auth.currentUser;
-        if (user) {
-          setUserId(user.uid);
-          const userDocRef = doc(firestore, 'users', user.uid);
-          const userDoc = await getDoc(userDocRef);
-
-          if (userDoc.exists()) {
-            const data = userDoc.data();
-            setUserName(data.name || '');
-            setEmail(data.email || '');
-          } else {
-            console.log('Documento do usuário não encontrado!');
-          }
-        }
-      } catch (error) {
-        console.error('Erro ao buscar dados do usuário:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchUserData();
-  }, []);
+  const [loading, setLoading] = useState(false);
 
   const handleEdit = () => setIsEditing(!isEditing);
 
-  const handleSave = async () => {
-    if (!userId) return;
-    try {
-      const userDocRef = doc(firestore, 'users', userId);
-      await updateDoc(userDocRef, {
-        name: userName,
-        email: email,
-      });
-      setIsEditing(false);
-      alert('Perfil atualizado com sucesso!');
-    } catch (error) {
-      console.error('Erro ao salvar perfil:', error);
-      alert('Erro ao salvar perfil!');
-    }
-  };
-
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-      navigation.reset({
-        index: 0,
-        routes: [{ name: 'Login' }],
-      });
-    } catch (error) {
-      alert('Erro ao sair da conta!');
-    }
+  const handleSave = () => {
+    setIsEditing(false);
+    alert('Perfil atualizado com sucesso!');
   };
 
   if (loading) {
@@ -116,12 +58,6 @@ export default function Perfil() {
           <Ionicons name={isEditing ? "close-outline" : "create-outline"} size={24} color="black" />
           <Text style={styles.actionText}>{isEditing ? "Cancelar" : "Editar Perfil"}</Text>
         </TouchableOpacity>
-        {!isEditing && (
-          <TouchableOpacity style={styles.actionButton} onPress={handleLogout}>
-            <Ionicons name="log-out-outline" size={24} color="red" />
-            <Text style={[styles.actionText, styles.logoutText]}>Sair da Conta</Text>
-          </TouchableOpacity>
-        )}
       </View>
     </View>
   );
@@ -162,9 +98,6 @@ const styles = StyleSheet.create({
     color: '#000',
     fontSize: 18,
     marginLeft: 10,
-  },
-  logoutText: {
-    color: 'red',
   },
   input: {
     width: '100%',

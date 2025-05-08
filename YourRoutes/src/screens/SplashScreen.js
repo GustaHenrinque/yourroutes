@@ -4,7 +4,7 @@ import { View, StyleSheet, Image } from 'react-native';
 export default function SplashScreen({ navigation }) {
   useEffect(() => {
     const timer = setTimeout(() => {
-      navigation.replace('Login'); // Alterado para redirecionar para "Login"
+      navigation.replace('Index'); // Redirecionar para "Index"
     }, 1500);
 
     return () => clearTimeout(timer);
@@ -12,8 +12,7 @@ export default function SplashScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Image source={require('../../assets/logo.jpeg')
-     } style={styles.logo} />
+      <Image source={require('../../assets/logo.jpeg')} style={styles.logo} />
     </View>
   );
 }
@@ -26,9 +25,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   logo: {
-    width: 200, // Largura 100%
-    height: 200, // Altura proporcional
-    aspectRatio: 235 / 39, // Mantém a proporção original
+    width: 200,
+    height: 200,
+    aspectRatio: 235 / 39,
     borderRadius: 20,
   },
 });
